@@ -31,10 +31,13 @@ module Mutant
     #
     # rubocop:disable Metrics/MethodLength
     def self.call(world, config)
+      setup_rails(world)
+
       env = Env
         .empty(world, config)
         .tap(&method(:infect))
         .with(matchable_scopes: matchable_scopes(world, config))
+
 
       subjects = start_subject(env, Matcher.from_config(env.config.matcher).call(env))
 
@@ -48,6 +51,20 @@ module Mutant
       end
     end
     # rubocop:enable Metrics/MethodLength
+
+    def self.setup_rails(world)
+      world.stdout.puts('Loading mutant config from rails environment')
+
+      # TODO add env to world.
+      #
+      # Make actual env configurable
+      ENV['RACK_ENV']  = 'test'
+      ENV['RAILS_ENV'] = 'test'
+
+      world.kernel.require('./config/environment.rb')
+
+      ::Rails.application.eager_load!
+    end
 
     def self.start_subject(env, subjects)
       start_expressions = env.config.matcher.start_expressions

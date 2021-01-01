@@ -171,11 +171,13 @@ require 'mutant/matcher/scope'
 require 'mutant/matcher/filter'
 require 'mutant/matcher/null'
 require 'mutant/matcher/static'
+require 'mutant/matcher/rails'
 require 'mutant/expression'
-require 'mutant/expression/parser'
 require 'mutant/expression/method'
 require 'mutant/expression/methods'
 require 'mutant/expression/namespace'
+require 'mutant/expression/parser'
+require 'mutant/expression/rails'
 require 'mutant/test'
 require 'mutant/timer'
 require 'mutant/integration'
@@ -251,7 +253,8 @@ module Mutant
         Expression::Method,
         Expression::Methods,
         Expression::Namespace::Exact,
-        Expression::Namespace::Recursive
+        Expression::Namespace::Recursive,
+        Expression::Rails
       ]),
       fail_fast:         false,
       includes:          EMPTY_ARRAY,
