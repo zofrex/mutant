@@ -826,3 +826,60 @@ Mutant::Meta::Example.add :send do
   mutation 'self.match(/foo\z/)'
   mutation "a.end_with?('foo')"
 end
+
+Mutant::Meta::Example.add :send do
+  source 'a.reduce(:+)'
+
+  singleton_mutations
+
+  mutation 'a'
+  mutation 'self.reduce(:+)'
+  mutation 'a.reduce'
+  mutation 'a.reduce(nil)'
+  mutation 'a.reduce(self)'
+  mutation 'a.reduce(:"+__mutant__")'
+  mutation ':+'
+  mutation 'a.sum'
+end
+
+Mutant::Meta::Example.add :send do
+  source 'a.reduce(INITIAL, &:+)'
+
+  singleton_mutations
+
+  mutation 'a'
+  mutation 'a.reduce'
+  mutation 'a.reduce(nil, &:+)'
+  mutation 'a.reduce(self, &:+)'
+  mutation 'a.reduce(INITIAL, &nil)'
+  mutation 'a.reduce(INITIAL, &self)'
+  mutation 'a.reduce(INITIAL)'
+  mutation 'a.reduce(&:+)'
+  mutation 'self.reduce(INITIAL, &:+)'
+  mutation 'a.reduce(INITIAL, &:"+__mutant__")'
+  mutation 'a.sum(INITIAL)'
+end
+
+Mutant::Meta::Example.add :send do
+  source 'reduce(:*)'
+
+  singleton_mutations
+
+  mutation 'reduce'
+  mutation ':*'
+  mutation 'reduce(nil)'
+  mutation 'reduce(self)'
+  mutation 'reduce(:"*__mutant__")'
+end
+
+Mutant::Meta::Example.add :send do
+  source 'foo(:+)'
+
+  singleton_mutations
+
+  mutation 'foo'
+  mutation ':+'
+  mutation 'foo(nil)'
+  mutation 'foo(self)'
+  mutation 'foo(:"+__mutant__")'
+end
